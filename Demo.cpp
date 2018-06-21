@@ -1,10 +1,10 @@
 /*
 	文件名称：Demo.cpp
-	创建日期：2018-06-20
+	创建日期：2018-06-21
 	作者：王垠丁
 	文件说明：数据操作类WagesManager和控制台界面操作
 	最后修改日期：2018-06-20
-	版本：0.0.1
+	版本：0.0.2
 */
 
 #include "Inc.h"
@@ -86,6 +86,26 @@ public:
 			}
 			fs.close();
 		}
+	}
+	//4.2保存职工工资数据函数：write()
+	void Save()
+	{
+		ofstream fs("gx.txt");  //一次性写入到数据文件 会覆盖旧数据
+		for (auto it = _works.begin(); it != _works.end(); it++)
+		{
+			fs << it->id << "=" << it->name << "=" << it->postWages << "=" << it->paySalary << "=" <<
+				it->jobAllowance << "=" << it->performancePay << "=" << it->shouldPay << "=" << it->tax << "=" << it->realWages << endl;
+		}
+		fs.close();
+	}
+
+
+	//4.3查询职工工资数据函数：find()
+	void Find(const string &id)
+	{
+		auto result = this->Get(id);
+		if (result != _works.end())
+			result->Print();
 	}
 
 	
