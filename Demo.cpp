@@ -4,7 +4,7 @@
 	作者：王垠丁
 	文件说明：数据操作类WagesManager和控制台界面操作
 	最后修改日期：2018-06-20
-	版本：0.0.2
+	版本：0.0.3
 */
 
 #include "Inc.h"
@@ -106,6 +106,43 @@ public:
 		auto result = this->Get(id);
 		if (result != _works.end())
 			result->Print();
+	}
+	//4.4浏览职工工资数据函数：list()
+	void ListInfo()
+	{
+		for (auto it = _works.begin(); it != _works.end(); it++)
+		{
+			it->Print();
+		}
+	}
+	//4.5修改职工工资数据函数：modify()
+	//只需要修改这4个属性：岗位工资、薪级工资、职务津贴、绩效工资 即可
+	//应发工资、个人所得税、实发工资会自动计算
+	void Modify(const string &id, float postWages, float paySalary, float jobAllowance, float performancePay)
+	{
+		auto result = this->Get(id);
+		if (result != _works.end())
+		{
+			result->postWages = postWages;
+			result->paySalary = paySalary;
+			result->jobAllowance = jobAllowance;
+			result->performancePay = performancePay;
+			CalcTax(id);  //重新计算应发工资、个人所得税、实发工资
+
+			Save(); //对数据进行了修改操作 要及时保存到数据文件
+		}
+	}
+
+	//4.6删除职工工资数据函数：del()
+	void Delete(const string &id)
+	{
+		auto result = this->Get(id);
+		if (result != _works.end())     //存在就执行双向链表的erase删除操作
+		{
+			_works.erase(result);
+
+			Save(); //对数据进行了修改操作 要及时保存到数据文件
+		}
 	}
 
 	
