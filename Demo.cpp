@@ -4,7 +4,7 @@
 	作者：王垠丁
 	文件说明：数据操作类WagesManager和控制台界面操作
 	最后修改日期：2018-06-20
-	版本：0.0.4
+	版本：0.0.5
 */
 
 #include "Inc.h"
@@ -244,5 +244,115 @@ private:
 	//双向链表保存职工信息
 	list<WorkerInfo> _works;  
 };
+//下面是用户界面操作  
+void ShowMainMenu()
+{
+	system("cls");
+	static string items[8] = { "1、查询" , "2、修改" , "3、添加" , "4、删除" , "5、保存" , "6、浏览"  ,"7、退出","请输入相应的指令" };
+	for (int i = 0; i < 8; i++)
+		cout << items[i] << endl;
+}
+
+int main()
+{
+	system("color F4"); //设置文字颜色和背景颜色
+	WagesManager wm;	//创建对象时调用构造函数自动读取数据文件
+	while (true)
+	{
+		ShowMainMenu();
+		string id;				//工号
+		string name;			//姓名
+		float postWages;		//岗位工资 
+		float paySalary;		//薪级工资
+		float jobAllowance;     //职务津贴
+		float performancePay;   //绩效工资
+
+		string isDelete;		//确认是否删除
+
+		int flag = -1;
+		cin >> flag;
+		switch (flag)
+		{
+		case 1:			//1、查询
+			cout << "请输入查询的工号" << endl;
+			cin >> id;
+			if (!wm.IsExistWorker(id))
+			{
+				cout << "不存在该员工,查询失败" << endl;
+				break;
+			}
+			wm.Find(id);
+			break;
+		case 2:			//2、修改
+			cout << "请输入修改的工号" << endl;
+			cin >> id;
+			if (!wm.IsExistWorker(id))
+			{
+				cout << "不存在该员工,修改失败" << endl;
+				break;
+			}
+			cout << "请重新输入岗位工资" << endl;
+			cin >> postWages;
+			cout << "请重新输入薪级工资" << endl;
+			cin >> paySalary;
+			cout << "请重新输入职务津贴" << endl;
+			cin >> jobAllowance;
+			cout << "请重新输入绩效工资" << endl;
+			cin >> performancePay;
+			wm.Modify(id, postWages, paySalary, jobAllowance, performancePay);
+			break;
+		case 3:			//3、添加
+			cout << "请输入添加的工号" << endl;
+			cin >> id;
+			if (wm.IsExistWorker(id))
+			{
+				cout << "添加失败,员工ID已经存在" << endl;
+				break;
+			}
+			cout << "请输入添加的姓名" << endl;
+			cin >> name;
+			cout << "请输入岗位工资" << endl;
+			cin >> postWages;
+			cout << "请输入薪级工资" << endl;
+			cin >> paySalary;
+			cout << "请输入职务津贴" << endl;
+			cin >> jobAllowance;
+			cout << "请输入绩效工资" << endl;
+			cin >> performancePay;
+
+			wm.Add(id, name, postWages, paySalary, jobAllowance, performancePay);
+			break;
+		case 4:		//4、删除
+			cout << "请输入删除的工号" << endl;
+			cin >> id;
+			if (wm.IsExistWorker(id))
+			{
+				cout << "确认删除：Y\t取消删除N" << endl;
+				cin >> isDelete;
+				if (isDelete == "Y" || isDelete == "y")
+				{
+					wm.Delete(id);
+					cout << "删除成功" << endl;
+				}
+			}
+			else
+				cout << "删除失败，不存在该员工" << endl;
+
+			break;
+		case 5:		//5、保存
+			wm.Save();
+			break;
+		case 6:		//6、浏览所有信息
+			wm.ListInfo();
+			break;
+		case 7:		//7、退出程序
+			return 0;
+		default:
+			break;
+		}
+		system("pause");
+	}
+	return 0;
+}
 
 	
