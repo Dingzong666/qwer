@@ -1,11 +1,12 @@
 /*
-	文件名称：Demo.cpp
-	创建日期：2018-06-21
-	作者：王垠丁
-	文件说明：数据操作类WagesManager和控制台界面操作
-	最后修改日期：2018-06-24
-	版本：0.0.5
+文件名称：demo.cpp
+创建日期：2018-06-21
+作者：王垠丁
+文件说明：工资管理类WagesManager和控制台界面操作
+最后修改日期：2018-06-28
+版本：0.0.6
 */
+
 
 #include "Inc.h"
 
@@ -66,11 +67,11 @@ public:
 		{
 			fstream fs;
 			fs.open("gx.txt", ios::in | ios::out);
-			char buff[1024] = {0};
+			char buff[1024] = { 0 };
 			while (fs.getline(buff, 1024))   //读取行
 			{
 				auto vec = Utility::SplitString(buff, "=");   //字符串分割
-	
+
 				WorkerInfo wi;
 				wi.id = vec.at(0);								//工号
 				wi.name = vec.at(1);							//姓名
@@ -91,10 +92,10 @@ public:
 	void Save()
 	{
 		ofstream fs("gx.txt");  //一次性写入到数据文件 会覆盖旧数据
-		for (auto it = _works.begin(); it != _works.end(); it++)
+		for (auto it = _works.begin(); it != _works.end(); it = it->next)
 		{
-			fs << it->id << "=" << it->name << "=" << it->postWages << "=" << it->paySalary << "=" <<
-				it->jobAllowance << "=" << it->performancePay << "=" << it->shouldPay << "=" << it->tax << "=" << it->realWages << endl;
+			fs << it->data.id << "=" << it->data.name << "=" << it->data.postWages << "=" << it->data.paySalary << "=" <<
+				it->data.jobAllowance << "=" << it->data.performancePay << "=" << it->data.shouldPay << "=" << it->data.tax << "=" << it->data.realWages << endl;
 		}
 		fs.close();
 	}
@@ -105,14 +106,14 @@ public:
 	{
 		auto result = this->Get(id);
 		if (result != _works.end())
-			result->Print();
+			result->data.Print();
 	}
 	//4.4浏览职工工资数据函数：list()
 	void ListInfo()
 	{
-		for (auto it = _works.begin(); it != _works.end(); it++)
+		for (auto it = _works.begin(); it != _works.end(); it = it->next)
 		{
-			it->Print();
+			it->data.Print();
 		}
 	}
 	//4.5修改职工工资数据函数：modify()
@@ -123,10 +124,10 @@ public:
 		auto result = this->Get(id);
 		if (result != _works.end())
 		{
-			result->postWages = postWages;
-			result->paySalary = paySalary;
-			result->jobAllowance = jobAllowance;
-			result->performancePay = performancePay;
+			result->data.postWages = postWages;
+			result->data.paySalary = paySalary;
+			result->data.jobAllowance = jobAllowance;
+			result->data.performancePay = performancePay;
 			CalcTax(id);  //重新计算应发工资、个人所得税、实发工资
 
 			Save(); //对数据进行了修改操作 要及时保存到数据文件
@@ -191,48 +192,48 @@ public:
 		if (w != _works.end())
 		{
 			//应发工资 = 岗位工资 +薪级工资+职务津贴+绩效工资
-			w->shouldPay = w->postWages + w->paySalary + w->jobAllowance + w->performancePay;
+			w->data.shouldPay = w->data.postWages + w->data.paySalary + w->data.jobAllowance + w->data.performancePay;
 
 			//3500起增点
-			float a = w->shouldPay - 3500;
+			float a = w->data.shouldPay - 3500;
 
 			//不够3500
 			if (a <= 0)
 			{
-				w->tax = 0;
-				w->realWages = w->shouldPay;
+				w->data.tax = 0;
+				w->data.realWages = w->data.shouldPay;
 			}
 			else
 			{
 				//应纳个人所得税税额=应纳税所得额×适用税率-速算扣除数
 				if (a > 0 && a <= 1500)
-					w->tax = a * 0.03f - 0;
+					w->data.tax = a * 0.03f - 0;
 				else if (a > 1500 && a <= 4500)
-					w->tax = a * 0.1f - 105;
+					w->data.tax = a * 0.1f - 105;
 				else if (a > 4500 && a <= 9000)
-					w->tax = a * 0.2f - 555;
+					w->data.tax = a * 0.2f - 555;
 				else if (a > 9000 && a <= 35000)
-					w->tax = a * 0.25f - 1005;
+					w->data.tax = a * 0.25f - 1005;
 				else if (a > 35000 && a <= 55000)
-					w->tax = a * 0.3f - 2755;
+					w->data.tax = a * 0.3f - 2755;
 				else if (a > 55000 && a <= 80000)
-					w->tax = a * 0.35f - 5505;
+					w->data.tax = a * 0.35f - 5505;
 				else
-					w->tax = a * 0.45f - 13505;
+					w->data.tax = a * 0.45f - 13505;
 
 				//实收工资 = 应付工资 - 税
-				w->realWages = w->shouldPay - w->tax;
+				w->data.realWages = w->data.shouldPay - w->data.tax;
 			}
 		}
 	}
 private:
 	//通过职工工号id返回双向链表迭代器指针
-	list<WorkerInfo>::iterator Get(string id)
+	Utility::NODE<WorkerInfo> *Get(string id)
 	{
-		list<WorkerInfo>::iterator result = _works.end();
-		for (auto it = _works.begin(); it != _works.end(); it++)
+		Utility::NODE<WorkerInfo> *result = _works.end();
+		for (auto it = _works.begin(); it != _works.end(); it = it->next)
 		{
-			if (id == it->id)
+			if (id == it->data.id)
 			{
 				result = it;
 				break;
@@ -242,20 +243,34 @@ private:
 	}
 
 	//双向链表保存职工信息
-	list<WorkerInfo> _works;  
+	Utility::List<WorkerInfo> _works;
 };
+
+
+
+
+
+
 //下面是用户界面操作  
 void ShowMainMenu()
 {
 	system("cls");
-	static string items[8] = { "1、查询" , "2、修改" , "3、添加" , "4、删除" , "5、保存" , "6、浏览"  ,"7、退出","请输入相应的指令" };
-	for (int i = 0; i < 8; i++)
-		cout << items[i] << endl;
+	cout<<"\t###	欢迎使用广西民族大学软件与信息安全职工工资管理系统	###"<<endl<<endl;
+	cout<<"\t请选择<1 -- 7>: "<<endl;
+	cout<<"\t============================================================="<<endl;
+	cout<<"\t|\t1、查询职工工资记录	                      	    |"<<endl;
+	cout<<"\t|\t2、修改职工工资记录	                      	    |"<<endl;
+	cout<<"\t|\t3、添加职工工资记录	                      	    |"<<endl;
+	cout<<"\t|\t4、删除职工工资记录	                      	    |"<<endl;
+	cout<<"\t|\t5、保存数据到文件	                      	    |"<<endl;
+	cout<<"\t|\t6、浏览职工记录		                      	    |"<<endl;
+	cout<<"\t|\t7、退出系统	                      	            |"<<endl;
+	cout<<"\t============================================================="<<endl<<endl;
+	cout<<"\t你的选择是：";
 }
 
 int main()
 {
-	system("color F4"); //设置文字颜色和背景颜色
 	WagesManager wm;	//创建对象时调用构造函数自动读取数据文件
 	while (true)
 	{
@@ -354,5 +369,3 @@ int main()
 	}
 	return 0;
 }
-
-	
