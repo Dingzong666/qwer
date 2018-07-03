@@ -1,12 +1,13 @@
 #include "Inc_C.h"
+
 //测试C风格的代码
 /*
 文件名称：demo.cpp
-创建日期：2018-06-28
+创建日期：2018-07-03
 作者：王垠丁
 文件说明：工资管理类WagesManager和控制台界面操作
 最后修改日期：2018-06-28
-版本：0.0.9
+版本：0.1.2
 */
 
 //使用C风格版本的链表
@@ -50,14 +51,14 @@ public:
 		clear(ls);
 		if (Utility::IsExistFile("gx.txt"))  //数据文件存在
 		{
-			fstream fs;
-			fs.open("gx.txt", ios::in | ios::out);
 			char buff[1024] = { 0 };
-			while (fs.getline(buff, 1024))   //读取行
-			{
+			FILE *pFile = fopen("gx.txt","r");
+			while(fscanf(pFile,"%[^\n]",buff)!=EOF)
+			{ 
+				fgetc(pFile);
 				auto vec = Utility::SplitString(buff, "=");   //字符串分割
 
-		 		WorkerInfo wi;
+				WorkerInfo wi;
 				wi.id = vec.at(0);								//工号
 				wi.name = vec.at(1);							//姓名
 				wi.postWages = Utility::StringToFloat(vec.at(2));			//岗位工资 
@@ -70,19 +71,27 @@ public:
 
 				push_back(ls,wi);
 			}
-			fs.close();
+
+			fclose(pFile);
 		}
 	}
 	//4.2保存职工工资数据函数：write()
 	void Save()
 	{   
-		ofstream fs("gx.txt");  //一次性写入到数据文件 会覆盖旧数据
+		//一次性写入到数据文件 会覆盖旧数据
+		string str;
 		for (auto it = begin(ls); it != end(ls); it = it->next)
 		{
-			fs << it->data.id << "=" << it->data.name << "=" << it->data.postWages << "=" << it->data.paySalary << "=" <<
-				it->data.jobAllowance << "=" << it->data.performancePay << "=" << it->data.shouldPay << "=" << it->data.tax << "=" << it->data.realWages << endl;
+			char buff[512]={0};
+			sprintf_s(buff,"%s=%s=%f=%f=%f=%f=%f=%f=%f",it->data.id.c_str() , it->data.name.c_str() , it->data.postWages ,it->data.paySalary ,
+				it->data.jobAllowance , it->data.performancePay ,it->data.shouldPay , it->data.tax, it->data.realWages);
+
+			str+=string(buff);
+			str+="\r\n";
 		}
-		fs.close();
+		FILE *pFile = fopen("gx.txt","w");  //write
+		fwrite(str.c_str(),str.length(),1,pFile);
+		fclose(pFile);
 	}
 
 
@@ -158,7 +167,7 @@ public:
 	}
 
 
-	//4.8计算个人所得税函数：grsds()
+		//4.8计算个人所得税函数：grsds()
 	//以现行税率为标准
 	//应纳个人所得税税额=应纳税所得额×适用税率
 
@@ -192,6 +201,8 @@ public:
 			}
 			else
 			{
+				
+				//
 				////应纳个人所得税税额=应纳税所得额×适用税率-速算扣除数
 				if (a > 0 && a <= 500)
 					w->data.tax = a * 0.05f;
@@ -265,6 +276,7 @@ void ShowMainMenu()
 int MainLoop()
 {
 	WagesManager wm;	//创建对象时调用构造函数自动读取数据文件
+
 	while (true)
 	{
 		ShowMainMenu();
