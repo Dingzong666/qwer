@@ -1,35 +1,37 @@
-#include "Inc_C.h"
 
-//²âÊÔC·ç¸ñµÄ´úÂë
+
+
+//æµ‹è¯•Cé£æ ¼çš„ä»£ç 
 /*
-ÎÄ¼şÃû³Æ£ºdemo.cpp
-´´½¨ÈÕÆÚ£º2018-07-03
-×÷Õß£ºÍõÛó¶¡
-ÎÄ¼şËµÃ÷£º¹¤×Ê¹ÜÀíÀàWagesManagerºÍ¿ØÖÆÌ¨½çÃæ²Ù×÷
-×îºóĞŞ¸ÄÈÕÆÚ£º2018-06-28
-°æ±¾£º0.1.2
+æ–‡ä»¶åç§°ï¼šdemo.cpp
+åˆ›å»ºæ—¥æœŸï¼š2018-07-03
+ä½œè€…ï¼šç‹å ä¸
+æ–‡ä»¶è¯´æ˜ï¼šå·¥èµ„ç®¡ç†ç±»WagesManagerå’Œæ§åˆ¶å°ç•Œé¢æ“ä½œ
+æœ€åä¿®æ”¹æ—¥æœŸï¼š2018-07-04
+ç‰ˆæœ¬ï¼š0.1.3
 */
 
-//Ê¹ÓÃC·ç¸ñ°æ±¾µÄÁ´±í
+//ä½¿ç”¨Cé£æ ¼ç‰ˆæœ¬çš„é“¾è¡¨
 
 #include "Inc.h"
+#include "Inc_C.h"
 
 
 void PrintInfo(const WorkerInfo &wi)
 {
 	cout << "-----------------------------------------------------------------------------\r\n";
-	cout << "¹¤ºÅ£º" << wi.id << " ĞÕÃû£º" << wi.name << endl;
-	cout << "¸ÚÎ»¹¤×Ê£º" <<wi.postWages << " Ğ½¼¶¹¤×Ê£º" << wi.paySalary << " Ö°Îñ½òÌù£º" << wi.jobAllowance << " ¼¨Ğ§¹¤×Ê£º" << wi.performancePay << endl;
-	cout << "Ó¦·¢¹¤×Ê£º" << wi.shouldPay << " ¸öÈËËùµÃË°£º" << wi.tax << " Êµ·¢¹¤×Ê£º" << wi.realWages << endl;
+	cout << "å·¥å·ï¼š" << wi.id << " å§“åï¼š" << wi.name << endl;
+	cout << "å²—ä½å·¥èµ„ï¼š" <<wi.postWages << " è–ªçº§å·¥èµ„ï¼š" << wi.paySalary << " èŒåŠ¡æ´¥è´´ï¼š" << wi.jobAllowance << " ç»©æ•ˆå·¥èµ„ï¼š" << wi.performancePay << endl;
+	cout << "åº”å‘å·¥èµ„ï¼š" << wi.shouldPay << " ä¸ªäººæ‰€å¾—ç¨ï¼š" << wi.tax << " å®å‘å·¥èµ„ï¼š" << wi.realWages << endl;
 	cout << "-----------------------------------------------------------------------------\r\n";
 }
 
 
 
-//¹¤×Ê¹ÜÀíÀà
-//Ö»°üº¬Êı¾İµÄ²éÑ¯¡¢ĞŞ¸Ä¡¢Ìí¼Ó¡¢É¾³ı¡¢±£´æ¡¢ÏÔÊ¾¡¢ÊäÈëÊı¾İ
-//²»Éæ¼°ÓëÓÃ»§½çÃæµÄ²Ù×÷  Óë½çÃæ¸ß¶È·ÖÀë
-//¶ÔÊı¾İÉ¾³ı Ìí¼Ó ĞŞ¸Ä²Ù×÷Ê±¼°Ê±¸üĞÂÊı¾İµ½ÎÄ¼ş
+//å·¥èµ„ç®¡ç†ç±»
+//åªåŒ…å«æ•°æ®çš„æŸ¥è¯¢ã€ä¿®æ”¹ã€æ·»åŠ ã€åˆ é™¤ã€ä¿å­˜ã€æ˜¾ç¤ºã€è¾“å…¥æ•°æ®
+//ä¸æ¶‰åŠä¸ç”¨æˆ·ç•Œé¢çš„æ“ä½œ  ä¸ç•Œé¢é«˜åº¦åˆ†ç¦»
+//å¯¹æ•°æ®åˆ é™¤ æ·»åŠ  ä¿®æ”¹æ“ä½œæ—¶åŠæ—¶æ›´æ–°æ•°æ®åˆ°æ–‡ä»¶
 class WagesManager
 {
 public:
@@ -39,70 +41,49 @@ public:
 		this->Read();
 	}
 
-	//ÊÇ·ñ´æÔÚ¸ÃÔ±¹¤  ·½±ãÊäÈëÊı¾İµÄÊ±ºòÅĞ¶ÏÊ¹ÓÃ
+	//æ˜¯å¦å­˜åœ¨è¯¥å‘˜å·¥  æ–¹ä¾¿è¾“å…¥æ•°æ®çš„æ—¶å€™åˆ¤æ–­ä½¿ç”¨
 	bool IsExistWorker(string id)
 	{
 		return this->Get(id) != end(ls);
 	}
 
-	//4.1¶ÁÈ¡Ö°¹¤¹¤×ÊÊı¾İº¯Êı£ºread()
+	//4.1è¯»å–èŒå·¥å·¥èµ„æ•°æ®å‡½æ•°ï¼šread()
 	void Read()
 	{
 		clear(ls);
-		if (Utility::IsExistFile("gx.txt"))  //Êı¾İÎÄ¼ş´æÔÚ
+		if (Utility::IsExistFile("gx.txt"))  //æ•°æ®æ–‡ä»¶å­˜åœ¨
 		{
-			char buff[1024] = { 0 };
-			FILE *pFile = fopen("gx.txt","r");
-			while(fscanf(pFile,"%[^\n]",buff)!=EOF)
-			{ 
-				fgetc(pFile);
-				auto vec = Utility::SplitString(buff, "=");   //×Ö·û´®·Ö¸î
-
-				WorkerInfo wi;
-				wi.id = vec.at(0);								//¹¤ºÅ
-				wi.name = vec.at(1);							//ĞÕÃû
-				wi.postWages = Utility::StringToFloat(vec.at(2));			//¸ÚÎ»¹¤×Ê 
-				wi.paySalary = Utility::StringToFloat(vec.at(3));			//Ğ½¼¶¹¤×Ê
-				wi.jobAllowance = Utility::StringToFloat(vec.at(4));		//Ö°Îñ½òÌù
-				wi.performancePay = Utility::StringToFloat(vec.at(5));    //¼¨Ğ§¹¤×Ê
-				wi.shouldPay = Utility::StringToFloat(vec.at(6));			//Ó¦·¢¹¤×Ê
-				wi.tax = Utility::StringToFloat(vec.at(7));				//¸öÈËËùµÃË°
-				wi.realWages = Utility::StringToFloat(vec.at(8));			//Êµ·¢¹¤×Ê
-
+			WorkerInfo wi;
+			FILE *pFile = fopen("gx.txt","r");  //è¯»æ–‡ä»¶ read 
+			while(fread(&wi,sizeof(wi),1,pFile))
+			{
 				push_back(ls,wi);
 			}
-
 			fclose(pFile);
 		}
 	}
-	//4.2±£´æÖ°¹¤¹¤×ÊÊı¾İº¯Êı£ºwrite()
+	//4.2ä¿å­˜èŒå·¥å·¥èµ„æ•°æ®å‡½æ•°ï¼šwrite()
 	void Save()
 	{   
-		//Ò»´ÎĞÔĞ´Èëµ½Êı¾İÎÄ¼ş »á¸²¸Ç¾ÉÊı¾İ
-		string str;
+		DeleteFileA("gx.txt");
+		FILE *pFile = fopen("gx.txt","a+");  //write a+ æ˜¯è¿½åŠ   å¦‚æœå†™å…¥ç»“æ„ä½“ è‡ªåŠ¨äºŒè¿›åˆ¶ä¿å­˜
+		
 		for (auto it = begin(ls); it != end(ls); it = it->next)
 		{
-			char buff[512]={0};
-			sprintf_s(buff,"%s=%s=%f=%f=%f=%f=%f=%f=%f",it->data.id.c_str() , it->data.name.c_str() , it->data.postWages ,it->data.paySalary ,
-				it->data.jobAllowance , it->data.performancePay ,it->data.shouldPay , it->data.tax, it->data.realWages);
-
-			str+=string(buff);
-			str+="\r\n";
+			fwrite(&it->data,sizeof(it->data),1,pFile);
 		}
-		FILE *pFile = fopen("gx.txt","w");  //write
-		fwrite(str.c_str(),str.length(),1,pFile);
 		fclose(pFile);
 	}
 
 
-	//4.3²éÑ¯Ö°¹¤¹¤×ÊÊı¾İº¯Êı£ºfind()
+	//4.3æŸ¥è¯¢èŒå·¥å·¥èµ„æ•°æ®å‡½æ•°ï¼šfind()
 	void Find(const string &id)
 	{
 		auto result = this->Get(id);
 		if (result != end(ls))
 			PrintInfo(result->data);
 	}
-	//4.4ä¯ÀÀÖ°¹¤¹¤×ÊÊı¾İº¯Êı£ºlist()
+	//4.4æµè§ˆèŒå·¥å·¥èµ„æ•°æ®å‡½æ•°ï¼šlist()
 	void ListInfo()
 	{
 		for (auto it = begin(ls); it != end(ls); it = it->next)
@@ -110,9 +91,9 @@ public:
 			PrintInfo(it->data);
 		}
 	}
-	//4.5ĞŞ¸ÄÖ°¹¤¹¤×ÊÊı¾İº¯Êı£ºmodify()
-	//Ö»ĞèÒªĞŞ¸ÄÕâ4¸öÊôĞÔ£º¸ÚÎ»¹¤×Ê¡¢Ğ½¼¶¹¤×Ê¡¢Ö°Îñ½òÌù¡¢¼¨Ğ§¹¤×Ê ¼´¿É
-	//Ó¦·¢¹¤×Ê¡¢¸öÈËËùµÃË°¡¢Êµ·¢¹¤×Ê»á×Ô¶¯¼ÆËã
+	//4.5ä¿®æ”¹èŒå·¥å·¥èµ„æ•°æ®å‡½æ•°ï¼šmodify()
+	//åªéœ€è¦ä¿®æ”¹è¿™4ä¸ªå±æ€§ï¼šå²—ä½å·¥èµ„ã€è–ªçº§å·¥èµ„ã€èŒåŠ¡æ´¥è´´ã€ç»©æ•ˆå·¥èµ„ å³å¯
+	//åº”å‘å·¥èµ„ã€ä¸ªäººæ‰€å¾—ç¨ã€å®å‘å·¥èµ„ä¼šè‡ªåŠ¨è®¡ç®—
 	void Modify(const string &id, float postWages, float paySalary, float jobAllowance, float performancePay)
 	{
 		auto result = this->Get(id);
@@ -122,78 +103,78 @@ public:
 			result->data.paySalary = paySalary;
 			result->data.jobAllowance = jobAllowance;
 			result->data.performancePay = performancePay;
-			CalcTax(id);  //ÖØĞÂ¼ÆËãÓ¦·¢¹¤×Ê¡¢¸öÈËËùµÃË°¡¢Êµ·¢¹¤×Ê
+			CalcTax(id);  //é‡æ–°è®¡ç®—åº”å‘å·¥èµ„ã€ä¸ªäººæ‰€å¾—ç¨ã€å®å‘å·¥èµ„
 
-			Save(); //¶ÔÊı¾İ½øĞĞÁËĞŞ¸Ä²Ù×÷ Òª¼°Ê±±£´æµ½Êı¾İÎÄ¼ş
+			Save(); //å¯¹æ•°æ®è¿›è¡Œäº†ä¿®æ”¹æ“ä½œ è¦åŠæ—¶ä¿å­˜åˆ°æ•°æ®æ–‡ä»¶
 		}
 	}
 
-	//4.6É¾³ıÖ°¹¤¹¤×ÊÊı¾İº¯Êı£ºdel()
+	//4.6åˆ é™¤èŒå·¥å·¥èµ„æ•°æ®å‡½æ•°ï¼šdel()
 	void Delete(const string &id)
 	{
 		auto result = this->Get(id);
-		if (result != end(ls))     //´æÔÚ¾ÍÖ´ĞĞË«ÏòÁ´±íµÄeraseÉ¾³ı²Ù×÷ 
+		if (result != end(ls))     //å­˜åœ¨å°±æ‰§è¡ŒåŒå‘é“¾è¡¨çš„eraseåˆ é™¤æ“ä½œ 
 		{
 			erase(ls,result);
 
-			Save(); //¶ÔÊı¾İ½øĞĞÁËĞŞ¸Ä²Ù×÷ Òª¼°Ê±±£´æµ½Êı¾İÎÄ¼ş
+			Save(); //å¯¹æ•°æ®è¿›è¡Œäº†ä¿®æ”¹æ“ä½œ è¦åŠæ—¶ä¿å­˜åˆ°æ•°æ®æ–‡ä»¶
 		}
 	}
-	//4.7Ìí¼ÓÖ°¹¤¹¤×ÊÊı¾İº¯Êı£ºadd()
-	//// ¹¤ºÅ  ĞÕÃû ¸ÚÎ»¹¤×Ê   Ğ½¼¶¹¤×Ê Ö°Îñ½òÌù ¼¨Ğ§¹¤×Ê)
+	//4.7æ·»åŠ èŒå·¥å·¥èµ„æ•°æ®å‡½æ•°ï¼šadd()
+	//// å·¥å·  å§“å å²—ä½å·¥èµ„   è–ªçº§å·¥èµ„ èŒåŠ¡æ´¥è´´ ç»©æ•ˆå·¥èµ„)
 	bool Add(const string &id, const string &name, float postWages, float paySalary, float jobAllowance, float performancePay)
 	{
-		if (!Utility::StringIsNumber(id))  //idÀïÃæ±£´æÁËÆäËû×Ö·û ²»ÊÇÈ«Êı×Ö 
+		if (!Utility::StringIsNumber(id))  //idé‡Œé¢ä¿å­˜äº†å…¶ä»–å­—ç¬¦ ä¸æ˜¯å…¨æ•°å­— 
 			return false;
 
 		auto result = this->Get(id);
-		if (result == end(ls))  //²»´æÔÚÕâ¸öID²ÅÄÜÌí¼Ó£¬±ÜÃâÖØ¸´
+		if (result == end(ls))  //ä¸å­˜åœ¨è¿™ä¸ªIDæ‰èƒ½æ·»åŠ ï¼Œé¿å…é‡å¤
 		{
 			WorkerInfo wi;
-			wi.id = id;								//¹¤ºÅ
-			wi.name = name;							//ĞÕÃû
-			wi.postWages = postWages;				//¸ÚÎ»¹¤×Ê 
-			wi.paySalary = paySalary;				//Ğ½¼¶¹¤×Ê
-			wi.jobAllowance = jobAllowance;			//Ö°Îñ½òÌù
-			wi.performancePay = performancePay;     //¼¨Ğ§¹¤×Ê
+			strcpy(wi.id,id.c_str());				//å·¥å·
+			strcpy(wi.name,name.c_str());			//å§“å
+			wi.postWages = postWages;				//å²—ä½å·¥èµ„ 
+			wi.paySalary = paySalary;				//è–ªçº§å·¥èµ„
+			wi.jobAllowance = jobAllowance;			//èŒåŠ¡æ´¥è´´
+			wi.performancePay = performancePay;     //ç»©æ•ˆå·¥èµ„
 
-			push_back(ls,wi);			//²åÈëµ½Ë«ÏòÁ´±íÎ²²¿
-			this->CalcTax(id);				//¼ÆËãË°ÂÊµÈ
+			push_back(ls,wi);			//æ’å…¥åˆ°åŒå‘é“¾è¡¨å°¾éƒ¨
+			this->CalcTax(id);				//è®¡ç®—ç¨ç‡ç­‰
 
-			Save(); //¶ÔÊı¾İ½øĞĞÁËÌí¼Ó²Ù×÷ Òª¼°Ê±±£´æµ½Êı¾İÎÄ¼ş
+			Save(); //å¯¹æ•°æ®è¿›è¡Œäº†æ·»åŠ æ“ä½œ è¦åŠæ—¶ä¿å­˜åˆ°æ•°æ®æ–‡ä»¶
 			return true;
 		}
 		return false;
 	}
 
 
-		//4.8¼ÆËã¸öÈËËùµÃË°º¯Êı£ºgrsds()
-	//ÒÔÏÖĞĞË°ÂÊÎª±ê×¼
-	//Ó¦ÄÉ¸öÈËËùµÃË°Ë°¶î=Ó¦ÄÉË°ËùµÃ¶î¡ÁÊÊÓÃË°ÂÊ
+		//4.8è®¡ç®—ä¸ªäººæ‰€å¾—ç¨å‡½æ•°ï¼šgrsds()
+	//ä»¥ç°è¡Œç¨ç‡ä¸ºæ ‡å‡†
+	//åº”çº³ä¸ªäººæ‰€å¾—ç¨ç¨é¢=åº”çº³ç¨æ‰€å¾—é¢Ã—é€‚ç”¨ç¨ç‡
 
-	//¼¶Êı	Ó¦ÄÉË°ËùµÃ¶î(º¬Ë°)				 Ë°ÂÊ(%)	   
-	//1	²»³¬¹ı500ÔªµÄ							5			
-	//2	³¬¹ı500ÔªÖÁ2000ÔªµÄ²¿·Ö				    10			
-	//3	³¬¹ı2000ÔªÖÁ5000ÔªµÄ²¿·Ö				15			
-	//4	³¬¹ı5000ÔªÖÁ200000ÔªµÄ²¿·Ö				20			
-	//5	³¬¹ı20000ÔªÖÁ40000ÔªµÄ²¿·Ö		        25			
-	//6	³¬¹ı40000ÔªÖÁ60000ÔªµÄ²¿·Ö       	    30			
-	//7	³¬¹ı60000ÔªÖÁ80000ÔªµÄ²¿·Ö      	    35			
-	//8	³¬¹ı80000ÔªÖÁ100000ÔªµÄ²¿·Ö     	    40			
-	//9 ³¬¹ı100000µÄ²¿·Ö                        45           
+	//çº§æ•°	åº”çº³ç¨æ‰€å¾—é¢(å«ç¨)				 ç¨ç‡(%)	   
+	//1	ä¸è¶…è¿‡500å…ƒçš„							5			
+	//2	è¶…è¿‡500å…ƒè‡³2000å…ƒçš„éƒ¨åˆ†				    10			
+	//3	è¶…è¿‡2000å…ƒè‡³5000å…ƒçš„éƒ¨åˆ†				15			
+	//4	è¶…è¿‡5000å…ƒè‡³200000å…ƒçš„éƒ¨åˆ†				20			
+	//5	è¶…è¿‡20000å…ƒè‡³40000å…ƒçš„éƒ¨åˆ†		        25			
+	//6	è¶…è¿‡40000å…ƒè‡³60000å…ƒçš„éƒ¨åˆ†       	    30			
+	//7	è¶…è¿‡60000å…ƒè‡³80000å…ƒçš„éƒ¨åˆ†      	    35			
+	//8	è¶…è¿‡80000å…ƒè‡³100000å…ƒçš„éƒ¨åˆ†     	    40			
+	//9 è¶…è¿‡100000çš„éƒ¨åˆ†                        45           
 	
 	void CalcTax(const string &id)
 	{
 		auto w = this->Get(id);
 		if (w != end(ls))
 		{
-			//Ó¦·¢¹¤×Ê = ¸ÚÎ»¹¤×Ê +Ğ½¼¶¹¤×Ê+Ö°Îñ½òÌù+¼¨Ğ§¹¤×Ê
+			//åº”å‘å·¥èµ„ = å²—ä½å·¥èµ„ +è–ªçº§å·¥èµ„+èŒåŠ¡æ´¥è´´+ç»©æ•ˆå·¥èµ„
 			w->data.shouldPay = w->data.postWages + w->data.paySalary + w->data.jobAllowance + w->data.performancePay;
 
-			//3500ÆğÔöµã
+			//3500èµ·å¢ç‚¹
 			float a = w->data.shouldPay - 3500;
 
-			//²»¹»3500
+			//ä¸å¤Ÿ3500
 			if (a <= 0)
 			{
 				w->data.tax = 0;
@@ -203,7 +184,7 @@ public:
 			{
 				
 				//
-				////Ó¦ÄÉ¸öÈËËùµÃË°Ë°¶î=Ó¦ÄÉË°ËùµÃ¶î¡ÁÊÊÓÃË°ÂÊ-ËÙËã¿Û³ıÊı
+				////åº”çº³ä¸ªäººæ‰€å¾—ç¨ç¨é¢=åº”çº³ç¨æ‰€å¾—é¢Ã—é€‚ç”¨ç¨ç‡-é€Ÿç®—æ‰£é™¤æ•°
 				if (a > 0 && a <= 500)
 					w->data.tax = a * 0.05f;
 				else if (a > 500 && a <= 2000)
@@ -223,13 +204,13 @@ public:
 				else if (a>100000)
 					w->data.tax = a * 0.45;
 
-				//ÊµÊÕ¹¤×Ê = Ó¦¸¶¹¤×Ê - Ë°
+				//å®æ”¶å·¥èµ„ = åº”ä»˜å·¥èµ„ - ç¨
 				w->data.realWages = w->data.shouldPay - w->data.tax;
 			}
 		}
 	}
 private:
-	//Í¨¹ıÖ°¹¤¹¤ºÅid·µ»ØË«ÏòÁ´±íµü´úÆ÷Ö¸Õë
+	//é€šè¿‡èŒå·¥å·¥å·idè¿”å›åŒå‘é“¾è¡¨è¿­ä»£å™¨æŒ‡é’ˆ
 	NODE *Get(string id)
 	{
 		NODE *result = end(ls);
@@ -244,7 +225,7 @@ private:
 		return result;
 	}
 
-	//Ë«ÏòÁ´±í±£´æÖ°¹¤ĞÅÏ¢
+	//åŒå‘é“¾è¡¨ä¿å­˜èŒå·¥ä¿¡æ¯
 	NODE *ls;
 };
 
@@ -253,119 +234,123 @@ private:
 
 
 
-//ÏÂÃæÊÇÓÃ»§½çÃæ²Ù×÷  
+//ä¸‹é¢æ˜¯ç”¨æˆ·ç•Œé¢æ“ä½œ  
 void ShowMainMenu()
 {
 	system("cls");
-	cout<<"\t###	»¶Ó­Ê¹ÓÃ¹ãÎ÷Ãñ×å´óÑ§Èí¼şÓëĞÅÏ¢°²È«Ö°¹¤¹¤×Ê¹ÜÀíÏµÍ³	###"<<endl<<endl;
-	cout<<"\tÇëÑ¡Ôñ<1 -- 7>: "<<endl;
+	cout<<"\t###	æ¬¢è¿ä½¿ç”¨å¹¿è¥¿æ°‘æ—å¤§å­¦è½¯ä»¶ä¸ä¿¡æ¯å®‰å…¨èŒå·¥å·¥èµ„ç®¡ç†ç³»ç»Ÿ	###"<<endl<<endl;
+	cout<<"\tè¯·é€‰æ‹©<1 -- 7>: "<<endl;
 	cout<<"\t============================================================="<<endl;
-	cout<<"\t|\t1¡¢²éÑ¯Ö°¹¤¹¤×Ê¼ÇÂ¼	                      	    |"<<endl;
-	cout<<"\t|\t2¡¢ĞŞ¸ÄÖ°¹¤¹¤×Ê¼ÇÂ¼	                      	    |"<<endl;
-	cout<<"\t|\t3¡¢Ìí¼ÓÖ°¹¤¹¤×Ê¼ÇÂ¼	                      	    |"<<endl;
-	cout<<"\t|\t4¡¢É¾³ıÖ°¹¤¹¤×Ê¼ÇÂ¼	                      	    |"<<endl;
-	cout<<"\t|\t5¡¢±£´æÊı¾İµ½ÎÄ¼ş	                      	    |"<<endl;
-	cout<<"\t|\t6¡¢ä¯ÀÀÖ°¹¤¼ÇÂ¼		                      	    |"<<endl;
-	cout<<"\t|\t7¡¢ÍË³öÏµÍ³	                      	            |"<<endl;
+	cout<<"\t|\t1ã€æŸ¥è¯¢èŒå·¥å·¥èµ„è®°å½•	                      	    |"<<endl;
+	cout<<"\t|\t2ã€ä¿®æ”¹èŒå·¥å·¥èµ„è®°å½•	                      	    |"<<endl;
+	cout<<"\t|\t3ã€æ·»åŠ èŒå·¥å·¥èµ„è®°å½•	                      	    |"<<endl;
+	cout<<"\t|\t4ã€åˆ é™¤èŒå·¥å·¥èµ„è®°å½•	                      	    |"<<endl;
+	cout<<"\t|\t5ã€ä¿å­˜æ•°æ®åˆ°æ–‡ä»¶	                      	    |"<<endl;
+	cout<<"\t|\t6ã€æµè§ˆèŒå·¥è®°å½•		                      	    |"<<endl;
+	cout<<"\t|\t7ã€é€€å‡ºç³»ç»Ÿ	                      	            |"<<endl;
 	cout<<"\t============================================================="<<endl<<endl;
-	cout<<"\tÄãµÄÑ¡ÔñÊÇ£º";
+	cout<<"\tä½ çš„é€‰æ‹©æ˜¯ï¼š";
 }
 
 
 
 int MainLoop()
 {
-	WagesManager wm;	//´´½¨¶ÔÏóÊ±µ÷ÓÃ¹¹Ôìº¯Êı×Ô¶¯¶ÁÈ¡Êı¾İÎÄ¼ş
+	WagesManager wm;	//åˆ›å»ºå¯¹è±¡æ—¶è°ƒç”¨æ„é€ å‡½æ•°è‡ªåŠ¨è¯»å–æ•°æ®æ–‡ä»¶
+	
+	
+	
+
 
 	while (true)
 	{
 		ShowMainMenu();
-		string id;				//¹¤ºÅ
-		string name;			//ĞÕÃû
-		float postWages;		//¸ÚÎ»¹¤×Ê 
-		float paySalary;		//Ğ½¼¶¹¤×Ê
-		float jobAllowance;     //Ö°Îñ½òÌù
-		float performancePay;   //¼¨Ğ§¹¤×Ê
+		string id;				//å·¥å·
+		string name;			//å§“å
+		float postWages;		//å²—ä½å·¥èµ„ 
+		float paySalary;		//è–ªçº§å·¥èµ„
+		float jobAllowance;     //èŒåŠ¡æ´¥è´´
+		float performancePay;   //ç»©æ•ˆå·¥èµ„
 
-		string isDelete;		//È·ÈÏÊÇ·ñÉ¾³ı
+		string isDelete;		//ç¡®è®¤æ˜¯å¦åˆ é™¤
 
 		int flag = -1;
 		cin >> flag;
 		switch (flag)
 		{
-		case 1:			//1¡¢²éÑ¯
-			cout << "ÇëÊäÈë²éÑ¯µÄ¹¤ºÅ" << endl;
+		case 1:			//1ã€æŸ¥è¯¢
+			cout << "è¯·è¾“å…¥æŸ¥è¯¢çš„å·¥å·" << endl;
 			cin >> id;
 			if (!wm.IsExistWorker(id))
 			{
-				cout << "²»´æÔÚ¸ÃÔ±¹¤,²éÑ¯Ê§°Ü" << endl;
+				cout << "ä¸å­˜åœ¨è¯¥å‘˜å·¥,æŸ¥è¯¢å¤±è´¥" << endl;
 				break;
 			}
 			wm.Find(id);
 			break;
-		case 2:			//2¡¢ĞŞ¸Ä
-			cout << "ÇëÊäÈëĞŞ¸ÄµÄ¹¤ºÅ" << endl;
+		case 2:			//2ã€ä¿®æ”¹
+			cout << "è¯·è¾“å…¥ä¿®æ”¹çš„å·¥å·" << endl;
 			cin >> id;
 			if (!wm.IsExistWorker(id))
 			{
-				cout << "²»´æÔÚ¸ÃÔ±¹¤,ĞŞ¸ÄÊ§°Ü" << endl;
+				cout << "ä¸å­˜åœ¨è¯¥å‘˜å·¥,ä¿®æ”¹å¤±è´¥" << endl;
 				break;
 			}
-			cout << "ÇëÖØĞÂÊäÈë¸ÚÎ»¹¤×Ê" << endl;
+			cout << "è¯·é‡æ–°è¾“å…¥å²—ä½å·¥èµ„" << endl;
 			cin >> postWages;
-			cout << "ÇëÖØĞÂÊäÈëĞ½¼¶¹¤×Ê" << endl;
+			cout << "è¯·é‡æ–°è¾“å…¥è–ªçº§å·¥èµ„" << endl;
 			cin >> paySalary;
-			cout << "ÇëÖØĞÂÊäÈëÖ°Îñ½òÌù" << endl;
+			cout << "è¯·é‡æ–°è¾“å…¥èŒåŠ¡æ´¥è´´" << endl;
 			cin >> jobAllowance;
-			cout << "ÇëÖØĞÂÊäÈë¼¨Ğ§¹¤×Ê" << endl;
+			cout << "è¯·é‡æ–°è¾“å…¥ç»©æ•ˆå·¥èµ„" << endl;
 			cin >> performancePay;
 			wm.Modify(id, postWages, paySalary, jobAllowance, performancePay);
 			break;
-		case 3:			//3¡¢Ìí¼Ó
-			cout << "ÇëÊäÈëÌí¼ÓµÄ¹¤ºÅ" << endl;
+		case 3:			//3ã€æ·»åŠ 
+			cout << "è¯·è¾“å…¥æ·»åŠ çš„å·¥å·" << endl;
 			cin >> id;
 			if (wm.IsExistWorker(id))
 			{
-				cout << "Ìí¼ÓÊ§°Ü,Ô±¹¤IDÒÑ¾­´æÔÚ" << endl;
+				cout << "æ·»åŠ å¤±è´¥,å‘˜å·¥IDå·²ç»å­˜åœ¨" << endl;
 				break;
 			}
-			cout << "ÇëÊäÈëÌí¼ÓµÄĞÕÃû" << endl;
+			cout << "è¯·è¾“å…¥æ·»åŠ çš„å§“å" << endl;
 			cin >> name;
-			cout << "ÇëÊäÈë¸ÚÎ»¹¤×Ê" << endl;
+			cout << "è¯·è¾“å…¥å²—ä½å·¥èµ„" << endl;
 			cin >> postWages;
-			cout << "ÇëÊäÈëĞ½¼¶¹¤×Ê" << endl;
+			cout << "è¯·è¾“å…¥è–ªçº§å·¥èµ„" << endl;
 			cin >> paySalary;
-			cout << "ÇëÊäÈëÖ°Îñ½òÌù" << endl;
+			cout << "è¯·è¾“å…¥èŒåŠ¡æ´¥è´´" << endl;
 			cin >> jobAllowance;
-			cout << "ÇëÊäÈë¼¨Ğ§¹¤×Ê" << endl;
+			cout << "è¯·è¾“å…¥ç»©æ•ˆå·¥èµ„" << endl;
 			cin >> performancePay;
 
 			wm.Add(id, name, postWages, paySalary, jobAllowance, performancePay);
 			break;
-		case 4:		//4¡¢É¾³ı
-			cout << "ÇëÊäÈëÉ¾³ıµÄ¹¤ºÅ" << endl;
+		case 4:		//4ã€åˆ é™¤
+			cout << "è¯·è¾“å…¥åˆ é™¤çš„å·¥å·" << endl;
 			cin >> id;
 			if (wm.IsExistWorker(id))
 			{
-				cout << "È·ÈÏÉ¾³ı£ºY\tÈ¡ÏûÉ¾³ıN" << endl;
+				cout << "ç¡®è®¤åˆ é™¤ï¼šY\tå–æ¶ˆåˆ é™¤N" << endl;
 				cin >> isDelete;
 				if (isDelete == "Y" || isDelete == "y")
 				{
 					wm.Delete(id);
-					cout << "É¾³ı³É¹¦" << endl;
+					cout << "åˆ é™¤æˆåŠŸ" << endl;
 				}
 			}
 			else
-				cout << "É¾³ıÊ§°Ü£¬²»´æÔÚ¸ÃÔ±¹¤" << endl;
+				cout << "åˆ é™¤å¤±è´¥ï¼Œä¸å­˜åœ¨è¯¥å‘˜å·¥" << endl;
 
 			break;
-		case 5:		//5¡¢±£´æ
+		case 5:		//5ã€ä¿å­˜
 			wm.Save();
 			break;
-		case 6:		//6¡¢ä¯ÀÀËùÓĞĞÅÏ¢
+		case 6:		//6ã€æµè§ˆæ‰€æœ‰ä¿¡æ¯
 			wm.ListInfo();
 			break;
-		case 7:		//7¡¢ÍË³ö³ÌĞò
+		case 7:		//7ã€é€€å‡ºç¨‹åº
 			return 0;
 		default:
 			break;
